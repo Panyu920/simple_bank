@@ -26,11 +26,7 @@ ORDER BY id
 LIMIT $2
 OFFSET $3;
 
--- -- name: UpdateTransfers :one
--- UPDATE transfers
---   set balance = $2
--- WHERE id = $1
--- RETURNING *;
+
 
 -- name: DeleteTransfer :exec
 DELETE FROM transfers

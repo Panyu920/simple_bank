@@ -1,14 +1,17 @@
 package api
 
-import db "simple_bank/db/sqlc"
-import "github.com/gin-gonic/gin"
+import (
+	db "simple_bank/db/sqlc"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Server struct {
-	store   *db.Store
+	store   db.Store
 	rounter *gin.Engine
 }
 
-func NewServer(store *db.Store) *Server {
+func NewServer(store db.Store) *Server {
 	server := Server{store: store}
 
 	server.rounter = gin.Default()

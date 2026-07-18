@@ -40,18 +40,10 @@ func (q *Queries) CreateTransfer(ctx context.Context, arg CreateTransferParams) 
 }
 
 const deleteTransfer = `-- name: DeleteTransfer :exec
-
 DELETE FROM transfers
 WHERE id = $1
 `
 
-// -- name: UpdateTransfers :one
-// UPDATE transfers
-//
-//	set balance = $2
-//
-// WHERE id = $1
-// RETURNING *;
 func (q *Queries) DeleteTransfer(ctx context.Context, id int64) error {
 	_, err := q.db.ExecContext(ctx, deleteTransfer, id)
 	return err
