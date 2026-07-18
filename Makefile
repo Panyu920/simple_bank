@@ -13,6 +13,8 @@ migrateup:
 migratedown:
 	migrate -path db/migration -database "postgresql://panyu:panyu@localhost:5432/simple_bank?sslmode=disable" -verbose down
 
+new_migration:
+	migrate create -ext sql -dir db/migration -seq $(name)
 sqlc:
 	sqlc generate
 
