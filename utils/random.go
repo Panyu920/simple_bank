@@ -27,6 +27,17 @@ func RandomOwner() string {
 	return name.String()
 }
 
+func RandomString(n int) string {
+	var name strings.Builder
+	name.Grow(n)
+	for range n {
+		name.WriteByte(letters[rand.Intn(26)])
+	}
+
+	return name.String()
+
+}
+
 func RandomBalance() int64 {
 	return int64(RandomInt(100, 10000))
 }
