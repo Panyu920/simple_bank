@@ -26,6 +26,8 @@ func NewServer(store db.Store) *Server {
 		log.Fatal("注册 currency 验证器失败")
 	}
 
+	server.rounter.POST("/user", server.createUser)
+
 	server.rounter.POST("/account", server.createAccount)
 	server.rounter.GET("/account/:id", server.getAccount)
 	server.rounter.GET("/account/", server.listAccount)
