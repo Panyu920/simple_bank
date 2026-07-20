@@ -1,3 +1,5 @@
 db_driver: postgres
 db_source: postgresql://panyu:panyu@localhost:5432/simple_bank?sslmode=disable
 server_address: 0.0.0.0:8080
+symmetrick_key: 123456789012345678901234567890py
+duration: 24h

@@ -1,8 +1,11 @@
 package api
 
 import (
+	"fmt"
 	"log"
 	db "simple_bank/db/sqlc"
+	"simple_bank/token"
+	"simple_bank/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -10,14 +13,23 @@ import (
 )
 
 type Server struct {
-	store   db.Store
-	rounter *gin.Engine
+	store      db.Store
+	rounter    *gin.Engine
+	tokenMaker token.Maker
+	config     *utils.Config
 }
 
-func NewServer(store db.Store) *Server {
-	server := Server{store: store}
+func NewServer(config *utils.Config, store db.Store) (*Server, error) {
+	tokenMaker, err := token.NewPasetoMaker(config.SymmetricKey)
+	if err != nil {
+		return nil, fmt.Errorf("create token maker error %v", err)
+	}
 
-	server.rounter = gin.Default()
+	server := Server{
+		config:     config,
+		store:      store,
+		tokenMaker: tokenMaker,
+	}
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		// 注册一个名为 "currency" 的自定义验证器
@@ -26,7 +38,16 @@ func NewServer(store db.Store) *Server {
 		log.Fatal("注册 currency 验证器失败")
 	}
 
+	server.setupRouter()
+
+	return &server, nil
+}
+
+func (server *Server) setupRouter() {
+	server.rounter = gin.Default()
+
 	server.rounter.POST("/user", server.createUser)
+	server.rounter.POST("/user/login", server.loginUser)
 
 	server.rounter.POST("/account", server.createAccount)
 	server.rounter.GET("/account/:id", server.getAccount)
@@ -34,7 +55,6 @@ func NewServer(store db.Store) *Server {
 
 	server.rounter.POST("/transfer", server.createTransfer)
 
-	return &server
 }
 
 func (server *Server) Start(address string) error {
