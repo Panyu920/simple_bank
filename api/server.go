@@ -49,11 +49,12 @@ func (server *Server) setupRouter() {
 	server.rounter.POST("/user", server.createUser)
 	server.rounter.POST("/user/login", server.loginUser)
 
-	server.rounter.POST("/account", server.createAccount)
-	server.rounter.GET("/account/:id", server.getAccount)
-	server.rounter.GET("/account/", server.listAccount)
+	authRouter := server.rounter.Group("/").Use(authMiddleWare(server.tokenMaker))
+	authRouter.POST("/account", server.createAccount)
+	authRouter.GET("/account/:id", server.getAccount)
+	authRouter.GET("/account/", server.listAccount)
 
-	server.rounter.POST("/transfer", server.createTransfer)
+	authRouter.POST("/transfer", server.createTransfer)
 
 }
 
