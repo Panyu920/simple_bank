@@ -103,7 +103,7 @@ func TestCreateUser(t *testing.T) {
 
 			require.NoError(t, err)
 
-			server.rounter.ServeHTTP(recorder, request)
+			server.router.ServeHTTP(recorder, request)
 			tc.checkResponse(t, recorder)
 		})
 	}

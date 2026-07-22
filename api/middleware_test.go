@@ -15,14 +15,15 @@ import (
 func addAuthorization(
 	t *testing.T,
 	request *http.Request,
-	tokkenMaker token.Maker,
+	tokenMaker token.Maker,
 	authorizationType string,
 	username string,
 	duration time.Duration,
 ) {
-	token, err := tokkenMaker.CreateToken(username, duration)
+	token, payload, err := tokenMaker.CreateToken(username, duration)
 
 	require.NoError(t, err)
+	require.NotEmpty(t, payload)
 
 	authorization := fmt.Sprintf("%s %s", authorizationType, token)
 
@@ -90,7 +91,7 @@ func TestAuthMiddleWare(t *testing.T) {
 			server := newTestServer(t, nil)
 
 			authPath := "/auth"
-			server.rounter.GET(authPath, authMiddleWare(server.tokenMaker), func(ctx *gin.Context) {
+			server.router.GET(authPath, authMiddleWare(server.tokenMaker), func(ctx *gin.Context) {
 				ctx.JSON(http.StatusOK, gin.H{})
 			})
 
@@ -100,7 +101,7 @@ func TestAuthMiddleWare(t *testing.T) {
 
 			tc.setupAuth(t, request, server.tokenMaker)
 
-			server.rounter.ServeHTTP(recorder, request)
+			server.router.ServeHTTP(recorder, request)
 			tc.checkResponse(t, recorder)
 		})
 	}

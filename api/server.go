@@ -14,7 +14,7 @@ import (
 
 type Server struct {
 	store      db.Store
-	rounter    *gin.Engine
+	router     *gin.Engine
 	tokenMaker token.Maker
 	config     *utils.Config
 }
@@ -44,12 +44,13 @@ func NewServer(config *utils.Config, store db.Store) (*Server, error) {
 }
 
 func (server *Server) setupRouter() {
-	server.rounter = gin.Default()
+	server.router = gin.Default()
 
-	server.rounter.POST("/user", server.createUser)
-	server.rounter.POST("/user/login", server.loginUser)
+	server.router.POST("/user", server.createUser)
+	server.router.POST("/user/login", server.loginUser)
+	server.router.POST("/user/renew_token", server.renewToken)
 
-	authRouter := server.rounter.Group("/").Use(authMiddleWare(server.tokenMaker))
+	authRouter := server.router.Group("/").Use(authMiddleWare(server.tokenMaker))
 	authRouter.POST("/account", server.createAccount)
 	authRouter.GET("/account/:id", server.getAccount)
 	authRouter.GET("/account/", server.listAccount)
@@ -59,7 +60,7 @@ func (server *Server) setupRouter() {
 }
 
 func (server *Server) Start(address string) error {
-	return server.rounter.Run(address)
+	return server.router.Run(address)
 }
 
 func errorResponse(err error) gin.H {
