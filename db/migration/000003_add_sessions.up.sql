@@ -6,7 +6,7 @@ CREATE TABLE "sessions" (
   "refresh_token" varchar NOT NULL,
   "is_blocked" bool NOT NULL DEFAULT (false),
   "refresh_token_expired_at" timestamptz NOT NULL,
-  "expired_at" timestamptz NOT NULL DEFAULT (now())
+  "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 

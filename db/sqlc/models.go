@@ -33,7 +33,7 @@ type Session struct {
 	RefreshToken          string    `json:"refresh_token"`
 	IsBlocked             bool      `json:"is_blocked"`
 	RefreshTokenExpiredAt time.Time `json:"refresh_token_expired_at"`
-	ExpiredAt             time.Time `json:"expired_at"`
+	CreatedAt             time.Time `json:"created_at"`
 }
 
 type Transfer struct {

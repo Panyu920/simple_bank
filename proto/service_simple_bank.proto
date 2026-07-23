@@ -1,15 +1,42 @@
 syntax = "proto3";
 
 package pb;
+import "google/api/annotations.proto";
+
 import "rpc_create_user.proto";
 import "rpc_login_user.proto";
 
+import "protoc-gen-openapiv2/options/annotations.proto";
+
 option go_package = "simple_bank/pb";
+
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "simple_bank"
+    version: "1.0"
+    contact: {
+      name: "gRPC-Gateway project"
+    //   url: "https://github.com/grpc-ecosystem/grpc-gateway"
+    //   email: "none@example.com"
+    };
+  };
+};
 
 // simple_bank rpc 服务
 service SimpleBank {
     // 创建用户
-    rpc CreateUser(CreateUserRequest)returns (CreateUserResponse);
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse){
+        option (google.api.http) = {
+      post: "/user"
+      body: "*"
+    };
+    }
     // 用户登录
-    rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
+    rpc LoginUser(LoginUserRequest) returns (LoginUserResponse){
+        option (google.api.http) = {
+        post: "/user/login"
+        body: "*"
+        };
+    };
 }
