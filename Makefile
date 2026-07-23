@@ -35,6 +35,7 @@ proto:
     --go-grpc_out=pb --go-grpc_opt=paths=source_relative \
 	--openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,merge_file_name=simple_bank,json_names_for_fields=true \
     proto/*.proto
+	statik -src=./doc/swagger -dest=./doc
 
 evans:
 	evans --host localhost --port 9090 -r repl
