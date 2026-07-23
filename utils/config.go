@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	ServerAddress        string        `mapstructure:"server_address"`
+	HttpServerAddress    string        `mapstructure:"http_server_address"`
+	GrpcServerAddress    string        `mapstructure:"grpc_server_address"`
 	DBDriver             string        `mapstructure:"db_driver"`
 	DBSource             string        `mapstructure:"db_source"`
 	SymmetricKey         string        `mapstructure:"symmetrick_key"`

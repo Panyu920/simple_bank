@@ -1,6 +1,7 @@
 db_driver: postgres
 db_source: postgresql://panyu:panyu@localhost:5432/simple_bank?sslmode=disable
-server_address: 0.0.0.0:8080
+http_server_address: 0.0.0.0:8080
+grpc_server_address: 0.0.0.0:9090
 symmetrick_key: 123456789012345678901234567890py
 access_token_duration: 24h
 refresh_token_duration: 168h

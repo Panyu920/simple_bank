@@ -3,7 +3,6 @@ package api
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -29,7 +28,6 @@ func (server *Server) renewToken(ctx *gin.Context) {
 	refreshPayload, err := server.tokenMaker.VerifyToken(req.RefreshToken)
 
 	if err != nil {
-		fmt.Println(1111)
 		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 		return
 	}
